@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AYANA — Моё портфолио</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --black: #050505;
+  --white: #f5f5f5;
+  --gray: #999;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Manrope', sans-serif;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ЖИВОЙ ФОН — СОХРАНЁН */
+
+#silk {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  opacity: .09;
+  background-image: url(
+    "data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E"
+  );
+}
+
+.glow {
+  position: fixed;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.055);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: -1;
+  transform: translate(-50%,-50%);
+}
+
+/* КУРСОР */
+
+.cursor {
+  width: 9px;
+  height: 9px;
+  position: fixed;
+  background: white;
+  border-radius: 50%;
+  z-index: 100;
+  pointer-events: none;
+  transform: translate(-50%,-50%);
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 50%;
+  z-index: 99;
+  pointer-events: none;
+  transform: translate(-50%,-50%);
+}
+
+/* HEADER */
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 25px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 50;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 5px;
+}
+
+.nav {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  font-size: 10px;
+  color: #aaa;
+  letter-spacing: 1px;
+  transition: .3s;
+}
+
+.nav a:hover { color: white; }
+
+/* HERO */
+
+.hero {
+  min-height: 100vh;
+  padding: 150px 10% 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.tag {
+  color: #999;
+  letter-spacing: 6px;
+  font-size: 10px;
+}
+
+.hero h1 {
+  font-size: clamp(55px, 11vw, 145px);
+  font-weight: 800;
+  line-height: .92;
+  letter-spacing: -8px;
+  margin: 40px 0 25px;
+  animation: intro 1.5s ease both;
+}
+
+.hero h1 span {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1px white;
+}
+
+.hero-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  max-width: 1000px;
+  margin-top: 30px;
+  gap: 40px;
+}
+
+.hero-bottom p {
+  color: #aaa;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.hero-photo {
+  width: 155px;
+  height: 190px;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(100%);
+  border: 1px solid #555;
+  transition: .6s;
+}
+
+.hero-photo:hover {
+  filter: grayscale(0%);
+}
+
+.scroll {
+  color: #888;
+  font-size: 10px;
+  letter-spacing: 3px;
+  animation: float 2s infinite;
+}
+
+@keyframes intro {
+  from { opacity: 0; transform: translateY(70px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  50% { transform: translateY(8px); }
+}
+
+/* ОБЩИЕ СЕКЦИИ */
+
+section {
+  padding: 130px 10%;
+  position: relative;
+}
+
+.section-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+  color: #777;
+  font-size: 10px;
+  letter-spacing: 4px;
+  gap: 15px;
+}
+
+h2 {
+  font-size: clamp(35px, 6vw, 75px);
+  font-weight: 700;
+  letter-spacing: -3px;
+  line-height: 1.1;
+}
+
+.line {
+  height: 1px;
+  background: rgba(255,255,255,.2);
+  margin: 30px 0;
+}
+
+/* REVEAL */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(55px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ABOUT */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.about-text {
+  color: #aaa;
+  font-size: 14px;
+  line-height: 2.2;
+  margin-top: 25px;
+}
+
+.about-image {
+  height: 500px;
+  width: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  border: 1px solid #333;
+  transition: .7s;
+}
+
+.about-image:hover {
+  filter: grayscale(0%);
+}
+
+/* INTERESTS */
+
+.interests {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  border-top: 1px solid #333;
+}
+
+.interest {
+  padding: 45px 25px;
+  border-right: 1px solid #333;
+  transition: .5s;
+}
+
+.interest:hover {
+  background: rgba(255,255,255,.07);
+  transform: translateY(-7px);
+}
+
+.interest .number {
+  font-size: 12px;
+  color: #777;
+}
+
+.interest h3 {
+  font-size: 24px;
+  margin: 35px 0 15px;
+}
+
+.interest p {
+  color: #999;
+  font-size: 12px;
+  line-height: 2;
+}
+
+/* SUBJECTS */
+
+.subjects {
+  display: flex;
+  flex-direction: column;
+}
+
+.subject {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 0;
+  border-bottom: 1px solid #333;
+  font-size: clamp(20px, 4vw, 38px);
+  transition: .4s;
+}
+
+.subject:hover {
+  padding-left: 20px;
+  color: #aaa;
+}
+
+.subject span {
+  color: #777;
+  font-size: 12px;
+}
+
+/* GALLERY */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  background: #161616;
+  border: 1px solid #333;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: .8s;
+  display: block;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.06);
+  filter: grayscale(0%);
+}
+
+.caption {
+  padding: 15px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #aaa;
+}
+
+/* ACHIEVEMENTS */
+
+.awards {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+}
+
+.award {
+  min-height: 220px;
+  padding: 30px;
+  border: 1px solid #444;
+  background: rgba(255,255,255,.025);
+  transition: .5s;
+}
+
+.award:hover {
+  background: rgba(255,255,255,.08);
+  border-color: white;
+}
+
+.award h3 {
+  margin: 25px 0 10px;
+}
+
+.award p {
+  color: #888;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.award img {
+  display: block;
+  width: 100%;
+  max-height: 350px;
+  object-fit: contain;
+  margin-top: 20px;
+  border: 1px solid #333;
+}
+
+/* КЛАСС */
+
+.class-photo {
+  width: 100%;
+  max-height: 550px;
+  object-fit: cover;
+  filter: grayscale(100%);
+  border: 1px solid #444;
+  transition: .6s;
+}
+
+.class-photo:hover {
+  filter: grayscale(0%);
+}
+
+/* МУЗЫКА */
+
+.music-button {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 1000;
+  padding: 14px 22px;
+  color: #050505;
+  background: #f5f5f5;
+  border: 1px solid white;
+  border-radius: 30px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.music-button:hover {
+  background: #bbb;
+  transform: translateY(-3px);
+}
+
+/* FOOTER */
+
+footer {
+  padding: 100px 10% 40px;
+  border-top: 1px solid #333;
+}
+
+footer h2 {
+  font-size: clamp(40px, 8vw, 100px);
+}
+
+footer p {
+  color: #777;
+  margin-top: 35px;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+@media(max-width: 750px) {
+  * { cursor: auto; }
+
+  .cursor, .cursor-ring { display: none; }
+
+  header { padding: 18px 5%; }
+
+  .nav { gap: 10px; }
+
+  .nav a { font-size: 8px; letter-spacing: 0; }
+
+  .hero h1 { letter-spacing: -4px; }
+
+  section { padding: 85px 7%; }
+
+  .about-grid,
+  .interests,
+  .gallery,
+  .awards {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image { height: 350px; }
+
+  .interest { border-right: none; border-bottom: 1px solid #333; }
+
+  .gallery-item img { height: 250px; }
+
+  .hero-bottom {
+    gap: 20px;
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .section-top {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="silk"></canvas>
+<div class="noise"></div>
+<div class="glow" id="glow"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<header>
+  <div class="logo">AYANA.</div>
+  <nav class="nav">
+    <a href="#about">ОБО МНЕ</a>
+    <a href="#interests">ИНТЕРЕСЫ</a>
+    <a href="#education">УЧЁБА</a>
+    <a href="#awards">ДОСТИЖЕНИЯ</a>
+    <a href="#class">МОЙ КЛАСС</a>
+    <a href="#gallery">ФОТО</a>
+  </nav>
+</header>
+
+<!-- ГЛАВНАЯ -->
+
+<div class="hero">
+  <div class="tag">ЛИЧНОЕ ПОРТФОЛИО / 2026</div>
+
+  <h1>
+    АЯНА<br>
+    <span>КЕРЕЗБЕКОВА</span>
+  </h1>
+
+  <div class="hero-bottom">
+    <div>
+      <p>
+        Аяна Керезбекова Эрлановна<br>
+        Ученица 10Г класса<br>
+        Творчество · Наука · Технологии
+      </p>
+      <div class="scroll" style="margin-top:25px">
+        ЛИСТАЙТЕ ВНИЗ ↓
+      </div>
+    </div>
+
+    <!-- ЗАМЕНИ ФАЙЛ НА СВОЁ ФОТО -->
+    <img class="hero-photo"
+         src="./photo_1_2026-11-27_19-46-27.jpg"
+         alt="Моя фотография">
+  </div>
+</div>
+
+<!-- ОБО МНЕ -->
+
+<section id="about">
+  <div class="section-top">
+    <span>01 / ОБО МНЕ</span>
+    <span>ЗНАКОМСТВО</span>
+  </div>
+
+  <div class="about-grid reveal">
+    <div>
+      <h2>Познакомимся<br>поближе<span style="color:#777">.</span></h2>
+
+      <p class="about-text">
+        Привет! Меня зовут Аяна Керезбекова
+        Эрлановна. Я ученица 10 класса.
+
+        Мне нравится изучать новое,
+        развивать свои способности,
+        заниматься творчеством и открывать
+        для себя мир технологий.
+
+        Я верю, что каждый день —
+        это возможность стать лучше.
+      </p>
+
+      <div class="line"></div>
+
+      <p class="about-text">
+        <b style="color:white">КЛАСС:</b> 10Г<br>
+        <b style="color:white">УЧИТЕЛЬНИЦА:</b> Айнагуль Манапбаевна
+      </p>
+    </div>
+
+    <img class="about-image"
+         src="./photo_2_2026-11-27_19-46-27.jpg"
+         alt="Моя фотография">
+  </div>
+</section>
+
+<!-- ИНТЕРЕСЫ -->
+
+<section id="interests">
+  <div class="section-top">
+    <span>02 / МОЙ МИР</span>
+    <span>ИНТЕРЕСЫ</span>
+  </div>
+
+  <h2 class="reveal">То, что меня<br>вдохновляет.</h2> 
+
+  <div class="line"></div>
+
+  <div class="interests reveal">
+
+    <div class="interest">
+      <span class="number">01 — ТВОРЧЕСТВО</span>
+      <h3>Рисование</h3>
+      <p>
+        Я люблю рисовать, создавать
+        собственные идеи и выражать
+        себя через искусство.
+      </p>
+    </div>
+
+    <div class="interest">
+      <span class="number">02 — ТЕХНОЛОГИИ</span>
+      <h3>IT и программирование</h3>
+      <p>
+        Мне интересно изучать
+        компьютерные технологии,
+        программирование и создание сайтов.
+      </p>
+    </div>
+
+    <div class="interest">
+      <span class="number">03 — РАЗВИТИЕ</span>
+      <h3>Новые знания</h3>
+      <p>
+        Мне нравится узнавать новое,
+        учиться и открывать
+        для себя интересные возможности.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ЛЮБИМЫЕ ПРЕДМЕТЫ -->
+
+<section id="education">
+  <div class="section-top">
+    <span>03 / ОБРАЗОВАНИЕ</span>
+    <span>МОЯ УЧЁБА</span>
+  </div>
+
+  <h2 class="reveal">Любимые<br>предметы.</h2>
+
+  <div class="subjects reveal">
+
+    <div class="subject">
+      АНГЛИЙСКИЙ ЯЗЫК
+      <span>01 / ЯЗЫК</span>
+    </div>
+
+    <div class="subject">
+      БИОЛОГИЯ
+      <span>02 / НАУКА</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ДОСТИЖЕНИЯ -->
+
+<section id="awards">
+  <div class="section-top">
+    <span>04 / ДОСТИЖЕНИЯ</span>
+    <span>МОИ УСПЕХИ</span>
+  </div>
+
+  <h2 class="reveal">Мои достижения.</h2>
+
+  <p class="about-text reveal">
+    Каждый успех — это результат стараний,
+    обучения и новых возможностей.
+  </p>
+
+  <div class="awards reveal">
+
+    <div class="award">
+      <span>01 / СЕРТИФИКАТ</span>
+      <h3>Мой сертификат</h3>
+      <p>
+        Здесь находится мой сертификат.
+      </p>
+
+      <!-- ВСТАВЬ СВОЙ СЕРТИФИКАТ -->
+      <img src="./photo_2026-11-27_15-51-21 (2).jpg"
+           alt="Мой сертификат">
+    </div>
+
+    <div class="award">
+      <span>02 / ДИПЛОМ</span>
+      <h3>Мой диплом</h3>
+      <p>
+        Здесь находится мой диплом.
+      </p>
+
+      <!-- ВСТАВЬ СВОЙ ДИПЛОМ -->
+      <img src="./photo_2026-11-27_15-51-21.jpg"
+           alt="Мой диплом">
+    </div>
+
+  </div>
+</section>
+
+<!-- ФИНАЛ -->
+<footer>
+  <div class="tag">СПАСИБО ЗА ВНИМАНИЕ</div>
+
+  <h2>THE END<span style="color:#777">.</span></h2>
+
+  <p>АЙЯНА КЕРЕЗБЕКОВА · ЛИЧНОЕ ПОРТФОЛИО · 2026</p>
+  <p>© ВСЕ ПРАВА ЗАЩИЩЕНЫ</p>
+</footer>
+
+<!-- МУЗЫКА -->
+
+<audio id="portfolioMusic" loop>
+  <source src="./G-Eazy_-_Lady_Killers_II_Christoph_Andersson_Remix_65597023 (1).mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-button"
+        id="musicButton"
+        onclick="toggleMusic()">
+  ♫ ВКЛЮЧИТЬ МУЗЫКУ
+</button>
+
+<script>
+
+/* АНИМИРОВАННАЯ ШЁЛКОВАЯ ТКАНЬ */
+
+const canvas = document.getElementById('silk');
+const ctx = canvas.getContext('2d');
+
+let w, h, time = 0;
+
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function drawSilk() {
+  ctx.clearRect(0, 0, w, h);
+
+  for (let j = 0; j < 15; j++) {
+    ctx.beginPath();
+
+    for (let x = 0; x <= w; x += 5) {
+      let y =
+        h * .48 +
+        Math.sin(x * .003 + time + j * .2) * 65 +
+        Math.sin(x * .008 - time * .7 + j) * 25 +
+        (j - 7) * 22;
+
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+
+    ctx.strokeStyle = `rgba(255,255,255,${0.012 + j*.001})`;
+    ctx.lineWidth = 30;
+    ctx.shadowBlur = 35;
+    ctx.shadowColor = 'rgba(255,255,255,.15)';
+    ctx.stroke();
+  }
+
+  time += .006;
+  requestAnimationFrame(drawSilk);
+}
+drawSilk();
+
+/* СВЕТ ОТ МЫШИ И КУРСОР */
+
+const glow = document.getElementById('glow');
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('ring');
+
+window.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+
+  ring.style.left = e.clientX + 'px';
+  ring.style.top = e.clientY + 'px';
+});
+
+/* ПОЯВЛЕНИЕ ПРИ ПРОКРУТКЕ */
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => {
+  observer.observe(el);
+});
+
+/* МУЗЫКАЛЬНЫЙ ПЛЕЕР */
+
+const music = document.getElementById('portfolioMusic');
+const musicButton = document.getElementById('musicButton');
+
+async function toggleMusic() {
+  if (music.paused) {
+    try {
+      await music.play();
+      musicButton.textContent = '♫ ВЫКЛЮЧИТЬ МУЗЫКУ';
+    } catch (error) {
+      musicButton.textContent = 'НЕ УДАЛОСЬ ВКЛЮЧИТЬ';
+    }
+  } else {
+    music.pause();
+    musicButton.textContent = '♫ ВКЛЮЧИТЬ МУЗЫКУ';
+  }
+}
+
+</script>
+</body>
+</html>
